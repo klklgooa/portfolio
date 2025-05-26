@@ -2012,3 +2012,49 @@ body.offcanvas .colorlib-nav-toggle {
 .js .animate-box {
   opacity: 0;
 }
+
+/* guestbook _ firebase */
+.guestbook-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.guestbook-form input,
+.guestbook-form textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+.guestbook-form button {
+  background-color: #2c98f0;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* 방명록 항목 */
+.guestbook-entries {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+}
+
+.guestbook-entry {
+  background-color: #f0f0f0;
+  padding: 15px;
+  border-radius: 8px;
+  word-break: break-word;
+}
+
+/* 반응형 */
+@media screen and (max-width: 992px) {
+  .guestbook-entries {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

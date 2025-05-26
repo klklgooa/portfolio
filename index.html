@@ -582,20 +582,6 @@
 							<div class="col-md-12">
 								<div class="timeline-centered">
 
-									<article class="timeline-entry animate-box" data-animate-effect="fadeInTop">
-										<div class="timeline-entry-inner">
-											<div class="timeline-icon color-4">
-												<i class="icon-pen2"></i>
-											</div>
-											<div class="timeline-label">
-												<h2><a href="http://www.storyofseoul.com/news/articleView.html?idxno=2257"
-														target="_blank">학생</a> <span>2025.12.31</span>
-												</h2>
-												<p>학생이었음</p>
-											</div>
-										</div>
-									</article>
-
 									<article class="timeline-entry animate-box" data-animate-effect="fadeInLeft">
 										<div class="timeline-entry-inner">
 											<div class="timeline-icon color-5">
@@ -606,6 +592,20 @@
 													<span>2026.01.01</span>
 												</h2>
 												<p>개발자가 될 예정</p>
+											</div>
+										</div>
+									</article>
+
+									<article class="timeline-entry animate-box" data-animate-effect="fadeInTop">
+										<div class="timeline-entry-inner">
+											<div class="timeline-icon color-4">
+												<i class="icon-pen2"></i>
+											</div>
+											<div class="timeline-label">
+												<h2><a href="http://www.storyofseoul.com/news/articleView.html?idxno=2257"
+														target="_blank">학생</a> <span>2025.12.31</span>
+												</h2>
+												<p>학생이었음</p>
 											</div>
 										</div>
 									</article>
@@ -707,7 +707,7 @@
 												<div class="panel-body">
 													<div class="row">
 														<div class="col-md-4">
-															<p>MST<br>
+															<p>MSTC<br>
 																2022.06 - 2022.07</p>
 
 														</div>
@@ -760,9 +760,6 @@
 					</div>
 				</section>
 
-
-
-
 				<section class="colorlib-blog" data-section="blog">
 					<div class="colorlib-narrow-content">
 						<div class="row">
@@ -772,38 +769,18 @@
 								<h2 class="colorlib-heading">Visitor Comments</h2>
 							</div>
 						</div>
-						<!-- <div class="row">
-						<div class="col-md-4 col-sm-6 animate-box" data-animate-effect="fadeInLeft">
-							<div class="blog-entry">
-								<a href="https://fabl1106.github.io" target="_blank" class="blog-img"><img src="images/blog-1.jpg" class="img-responsive" alt="HTML5 Bootstrap Template by colorlib.com"></a>
-								<div class="desc">
-									<span><small>since 2019.01 </small> | <small> 개발 블로그 운영</small> </span>
-									<h3><a href="https://fabl1106.github.io" target="_blank">대구올빼미의 새벽 개발로그</a></h3>
-									<p>29살의 조금 늦은 나이로 개발에 입문하였지만 어제보다 조금 더 성장하자는 목표를 가지고 개발 블로그를 지속적으로 운영해오고 있습니다.</p>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 col-sm-6 animate-box" data-animate-effect="fadeInRight">
-							<div class="blog-entry">
-								<a href="https://www.youtube.com/channel/UCw9t6aprCOnNfK16Zjpp6bQ?view_as=subscriber" target="_blank" class="blog-img"><img src="images/blog-2.jpg" class="img-responsive" alt="HTML5 Bootstrap Template by colorlib.com"></a>
-								<div class="desc">
-									<span><small>since 2019.04 </small> | <small>개발 유튜브 채널 운영 </small></span>
-									<h3><a href="https://www.youtube.com/channel/UCw9t6aprCOnNfK16Zjpp6bQ?view_as=subscriber" target="_blank">대구올빼의 유튜브 </a></h3>
-									<p>유튜브 채널을 운영하며 배운 것들을 정리해서 영상을 촬영하고 있습니다. 개인적으로 복습을 한번 더 하는 장점이 있습니다.</p>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 col-sm-6 animate-box" data-animate-effect="fadeInLeft">
-							<div class="blog-entry">
-								<a href="#" onclick="return false;" class="blog-img"><img src="images/blog-3.jpg" class="img-responsive" alt="HTML5 Bootstrap Template by colorlib.com"></a>
-								<div class="desc">
-									<span><small>since 2019.03 </small> | <small> 개발 관련 행사 참가 </small></span>
-									<h3><a href="#" onclick="return false;">SEF2019/구글IO/엔잴핵해커톤</a></h3>
-									<p>개발 관련 정보들을 얻고, 개발자들을 만나기 위해 관련 행사들을 지속적으로 참가해오고 있습니다.</p>
-								</div>
-							</div>
-						</div>
-					</div> -->
+
+						<!-- 방명록 목록 -->
+						<div id="guestbook-entries" class="guestbook-entries"></div>
+						<br>
+
+						<!-- 방명록 폼 -->
+						<form id="guestbook-form" class="guestbook-form">
+							<input type="text" id="nickname" placeholder="닉네임" required />
+							<textarea id="message" placeholder="내용을 입력하세요" required></textarea>
+							<button type="submit">방명록 남기기</button>
+						</form>
+
 						<div class="row">
 							<div class="col-md-12 animate-box">
 								<p><a href="#" onclick="return false;" class="btn btn-primary btn-lg btn-load-more">더
@@ -893,6 +870,69 @@
 	<script data-cfasync="false" type="text/javascript"
 		src="https://cdn.rawgit.com/dwyl/html-form-send-email-via-google-script-without-server/master/form-submission-handler.js"></script>
 	<script src="js/main.js"></script>
+
+	<!-- Firebase SDK -->
+	<script type="module">
+		// Firebase SDK 가져오기
+		import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+		import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
+
+		// Firebase 설정
+		const firebaseConfig = {
+			apiKey: "AIzaSyBQyNRL3KHO6rdiL6ICweSBbZPclkM2hLc",
+			authDomain: "fir-project-b6de7.firebaseapp.com",
+			databaseURL: "https://fir-project-b6de7-default-rtdb.firebaseio.com/",
+			projectId: "fir-project-b6de7",
+			storageBucket: "fir-project-b6de7.firebasestorage.app",
+			messagingSenderId: "120967182812",
+			appId: "1:120967182812:web:ae4f9b9c5f02b197817719",
+			measurementId: "G-RWB5KCSTQQ"
+		};
+
+		// Firebase 초기화
+		const app = initializeApp(firebaseConfig);
+		const db = getDatabase(app);
+		const guestbookRef = ref(db, "guestbook");
+
+		// 방명록 폼 처리
+		const form = document.getElementById("guestbook-form");
+		form.addEventListener("submit", function (e) {
+			e.preventDefault();
+			const nickname = document.getElementById("nickname").value.trim();
+			const message = document.getElementById("message").value.trim();
+
+			if (nickname && message) {
+				push(guestbookRef, {
+					nickname,
+					message,
+					timestamp: Date.now()
+				});
+
+				form.reset();
+			}
+		});
+
+		// 실시간으로 방명록 추가
+		const entriesContainer = document.getElementById("guestbook-entries");
+
+		onChildAdded(guestbookRef, (data) => {
+			const entry = data.val();
+			const div = document.createElement("div");
+			div.className = "guestbook-entry";
+			div.innerHTML = `<strong>${entry.nickname}</strong><p>${entry.message}</p>`;
+			entriesContainer.prepend(div);
+		});
+
+		function renderGuestbookEntry(entry) {
+			return `
+    <div class="guestbook-entry">
+      <p><strong>닉네임:</strong> ${entry.nickname}</p>
+      <p><strong>내용:</strong> ${entry.message}</p>
+    </div>
+  `;
+		}
+
+	</script>
 
 </body>
 
