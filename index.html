@@ -782,12 +782,14 @@
 						</div>
 
 						<div id="guestbook-container">
-							<div id="guestbook-entries" class="guestbook-entries"></div>
+							<div class="guestbook-wrapper">
+								<button id="prev-page" class="nav-button" disabled>⬅</button>
 
-							<div class="pagination">
-								<button id="prev-page" disabled>⬅</button>
-								<button id="next-page" disabled>➡</button>
+								<div id="guestbook-entries" class="guestbook-entries"></div>
+
+								<button id="next-page" class="nav-button" disabled>➡</button>
 							</div>
+
 
 							<form id="guestbook-form" class="guestbook-form">
 								<input type="text" id="nickname" placeholder="닉네임" required />
