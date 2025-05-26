@@ -2,6 +2,16 @@
 <html>
 
 <head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-E9PC8KTJC0"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag() { dataLayer.push(arguments); }
+		gtag('js', new Date());
+
+		gtag('config', 'G-E9PC8KTJC0');
+	</script>
+
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>klklgooa</title>
@@ -45,6 +55,7 @@
 
 	<!-- Modernizr JS -->
 	<script src="js/modernizr-2.6.2.min.js"></script>
+
 </head>
 
 <body>
@@ -770,18 +781,22 @@
 							</div>
 						</div>
 
-						<!-- 방명록 목록 -->
-						<div id="guestbook-entries" class="guestbook-entries">
+						<div id="guestbook-container">
+							<div id="guestbook-entries" class="guestbook-entries"></div>
 
+							<div class="pagination">
+								<button id="prev-page" disabled>⬅</button>
+								<button id="next-page" disabled>➡</button>
+							</div>
+
+							<form id="guestbook-form" class="guestbook-form">
+								<input type="text" id="nickname" placeholder="닉네임" required />
+								<textarea id="message" placeholder="내용을 입력하세요" required></textarea>
+								<button type="submit">방명록 남기기</button>
+							</form>
 						</div>
-						<br>
 
-						<!-- 방명록 폼 -->
-						<form id="guestbook-form" class="guestbook-form">
-							<input type="text" id="nickname" placeholder="닉네임" required />
-							<textarea id="message" placeholder="내용을 입력하세요" required></textarea>
-							<button type="submit">방명록 남기기</button>
-						</form>
+						<br><br>
 
 						<div class="row">
 							<div class="col-md-12 animate-box">
@@ -896,28 +911,65 @@
 		const db = getDatabase(app);
 		const guestbookRef = ref(db, "guestbook");
 
-		// 방명록 템플릿 함수
+		const entriesContainer = document.getElementById("guestbook-entries");
+		const form = document.getElementById("guestbook-form");
+
+		let entries = []; // 전체 항목 저장
+		let currentPage = 0;
+		const entriesPerPage = 4;
+
+		// YYYY.MM.DD 포맷 함수
+		function formatDate(timestamp) {
+			const date = new Date(timestamp);
+			return `${date.getFullYear()}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getDate().toString().padStart(2, '0')}`;
+		}
+
+		// 템플릿
 		function renderGuestbookEntry(entry) {
 			return `
       <div class="guestbook-entry">
         <p><strong>닉네임:</strong> ${entry.nickname}</p>
         <p><strong>내용:</strong> ${entry.message}</p>
+        <p class="date">${formatDate(entry.timestamp)}</p>
       </div>
     `;
 		}
 
-		// 실시간 방명록 수신
-		const entriesContainer = document.getElementById("guestbook-entries");
-		onChildAdded(guestbookRef, (data) => {
-			const entry = data.val();
-			const html = renderGuestbookEntry(entry);
-			const div = document.createElement("div");
-			div.innerHTML = html;
-			entriesContainer.prepend(div); // 가장 위에 추가
+		// 페이지 렌더링
+		function renderPage() {
+			const start = currentPage * entriesPerPage;
+			const end = start + entriesPerPage;
+			const visibleEntries = entries.slice(start, end);
+
+			entriesContainer.innerHTML = visibleEntries.map(renderGuestbookEntry).join("");
+
+			document.getElementById("prev-page").disabled = currentPage === 0;
+			document.getElementById("next-page").disabled = end >= entries.length;
+		}
+
+		// 페이지네이션 버튼
+		document.getElementById("prev-page").addEventListener("click", () => {
+			if (currentPage > 0) {
+				currentPage--;
+				renderPage();
+			}
 		});
 
-		// 방명록 폼 제출 처리
-		const form = document.getElementById("guestbook-form");
+		document.getElementById("next-page").addEventListener("click", () => {
+			if ((currentPage + 1) * entriesPerPage < entries.length) {
+				currentPage++;
+				renderPage();
+			}
+		});
+
+		// Firebase에서 데이터 수신
+		onChildAdded(guestbookRef, (data) => {
+			const entry = data.val();
+			entries.unshift(entry); // 최신순
+			renderPage();
+		});
+
+		// 입력 폼 처리
 		form.addEventListener("submit", function (e) {
 			e.preventDefault();
 			const nickname = document.getElementById("nickname").value.trim();
@@ -929,12 +981,9 @@
 					message,
 					timestamp: Date.now()
 				});
-
 				form.reset();
 			}
 		});
-
-
 	</script>
 
 </body>
