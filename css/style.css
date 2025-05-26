@@ -2013,12 +2013,16 @@ body.offcanvas .colorlib-nav-toggle {
   opacity: 0;
 }
 
-/* guestbook _ firebase */
+/* guestbook - firebase 스타일 */
+
+/* 폼 정렬: 세로 정렬되도록 */
 .guestbook-form {
   display: flex;
   flex-direction: column;
   gap: 10px;
   margin-bottom: 30px;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .guestbook-form input,
@@ -2027,6 +2031,12 @@ body.offcanvas .colorlib-nav-toggle {
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 16px;
+  width: 100%;
+}
+
+.guestbook-form textarea {
+  min-height: 100px;
+  resize: vertical;
 }
 
 .guestbook-form button {
@@ -2036,25 +2046,49 @@ body.offcanvas .colorlib-nav-toggle {
   padding: 12px;
   border-radius: 6px;
   cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.2s ease;
 }
 
-/* 방명록 항목 */
+.guestbook-form button:hover {
+  background-color: #1a7adf;
+}
+
+/* 방명록 항목 리스트 */
 .guestbook-entries {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 15px;
+  padding: 30px 0;
 }
 
 .guestbook-entry {
-  background-color: #f0f0f0;
+  background-color: #f8f8f8;
   padding: 15px;
   border-radius: 8px;
   word-break: break-word;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* 반응형 */
+.guestbook-entry p {
+  margin: 5px 0;
+  font-size: 15px;
+}
+
+.guestbook-entry p strong {
+  font-weight: 600;
+}
+
+/* 반응형 처리 */
 @media screen and (max-width: 992px) {
   .guestbook-entries {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+@media screen and (max-width: 576px) {
+  .guestbook-entries {
+    grid-template-columns: 1fr;
+  }
+}
+

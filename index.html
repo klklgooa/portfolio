@@ -771,7 +771,9 @@
 						</div>
 
 						<!-- 방명록 목록 -->
-						<div id="guestbook-entries" class="guestbook-entries"></div>
+						<div id="guestbook-entries" class="guestbook-entries">
+
+						</div>
 						<br>
 
 						<!-- 방명록 폼 -->
@@ -894,7 +896,27 @@
 		const db = getDatabase(app);
 		const guestbookRef = ref(db, "guestbook");
 
-		// 방명록 폼 처리
+		// 방명록 템플릿 함수
+		function renderGuestbookEntry(entry) {
+			return `
+      <div class="guestbook-entry">
+        <p><strong>닉네임:</strong> ${entry.nickname}</p>
+        <p><strong>내용:</strong> ${entry.message}</p>
+      </div>
+    `;
+		}
+
+		// 실시간 방명록 수신
+		const entriesContainer = document.getElementById("guestbook-entries");
+		onChildAdded(guestbookRef, (data) => {
+			const entry = data.val();
+			const html = renderGuestbookEntry(entry);
+			const div = document.createElement("div");
+			div.innerHTML = html;
+			entriesContainer.prepend(div); // 가장 위에 추가
+		});
+
+		// 방명록 폼 제출 처리
 		const form = document.getElementById("guestbook-form");
 		form.addEventListener("submit", function (e) {
 			e.preventDefault();
@@ -912,25 +934,6 @@
 			}
 		});
 
-		// 실시간으로 방명록 추가
-		const entriesContainer = document.getElementById("guestbook-entries");
-
-		onChildAdded(guestbookRef, (data) => {
-			const entry = data.val();
-			const div = document.createElement("div");
-			div.className = "guestbook-entry";
-			div.innerHTML = `<strong>${entry.nickname}</strong><p>${entry.message}</p>`;
-			entriesContainer.prepend(div);
-		});
-
-		function renderGuestbookEntry(entry) {
-			return `
-    <div class="guestbook-entry">
-      <p><strong>닉네임:</strong> ${entry.nickname}</p>
-      <p><strong>내용:</strong> ${entry.message}</p>
-    </div>
-  `;
-		}
 
 	</script>
 
